@@ -54,7 +54,7 @@ PATTERN_WITH_SUBSCRIPT = re.compile(
         (.+)                    # A pattern expression ending with...
         \[(?:                   # A [subscript] expression comprising:
             (-?[0-9]+)|         # A single positive or negative number
-            ([0-9]+)([:-])      # Or an x:y or x: range.
+            (-?[0-9]+)([:-])      # Or an x:y or x: range.
             ([0-9]*)
         )\]
         $
@@ -520,7 +520,6 @@ class InventoryManager(object):
         # We want a pattern followed by an integer or range subscript.
         # (We can't be more restrictive about the expression because the
         # fnmatch semantics permit [\[:\]] to occur.)
-
         subscript = None
         m = PATTERN_WITH_SUBSCRIPT.match(pattern)
         if m:
@@ -546,7 +545,9 @@ class InventoryManager(object):
             return hosts
 
         (start, end) = subscript
-
+        
+        if start < 0:
+            start = len(hosts) + start
         if end:
             if end == -1:
                 end = len(hosts) - 1
