@@ -1093,7 +1093,6 @@ class GalaxyCLI(CLI):
         init_path = context.CLIARGS['init_path']
         force = context.CLIARGS['force']
         obj_skeleton = context.CLIARGS['{0}_skeleton'.format(galaxy_type)]
-
         obj_name = context.CLIARGS['{0}_name'.format(galaxy_type)]
 
         inject_data = dict(
@@ -1101,11 +1100,14 @@ class GalaxyCLI(CLI):
             ansible_plugin_list_dir=get_versioned_doclink('plugins/plugins.html'),
         )
         if galaxy_type == 'role':
+            obj_dir = os.getcwd().split(os.sep)[-3:]
             inject_data.update(dict(
                 author='your name',
                 company='your company (optional)',
                 license='license (GPL-2.0-or-later, MIT, etc)',
                 role_name=obj_name,
+                namespace=obj_dir[0],
+                collection_name=obj_dir[1],
                 role_type=context.CLIARGS['role_type'],
                 issue_tracker_url='http://example.com/issue/tracker',
                 repository_url='http://example.com/repository',
